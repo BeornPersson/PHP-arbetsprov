@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 		
 <?php 
-    include('class_lib.php');
+    include('Bowling.php');
     session_start();
 
     if(!isset($_SESSION['plrArray'])) {
