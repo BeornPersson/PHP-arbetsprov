@@ -2,7 +2,7 @@
 
 class Player { 
     protected $_name;
-    protected $_totalScore;
+    public $totalScore = 0;
     protected $_frame = array(array());
 	protected $_frameScore = array();
 	
@@ -132,6 +132,7 @@ class Player {
                 }
             }
             else {
+            // all other frames
             // special cases
             if($this->_frame[$i][0] === 'X') {
                 // a strike was made
@@ -145,9 +146,16 @@ class Player {
                 }
                 else {
                     // no double or turkey
-                    $this->_frameScore[$i] = 10;
-                    $this->_frameScore[$i] += (integer)$this->_frame[$i+1][0];
-                    $this->_frameScore[$i] += (integer)$this->_frame[$i+1][1];
+                    if($this->_frame[$i+1][1] === '/') {
+                        // next frame was a spar, thus points is 20 for the strike
+                        $this->_frameScore[$i] = 20;
+                    }
+                    else {
+                        // no spar, just add points
+                        $this->_frameScore[$i] = 10;
+                        $this->_frameScore[$i] += (integer)$this->_frame[$i+1][0];
+                        $this->_frameScore[$i] += (integer)$this->_frame[$i+1][1];
+                    }
                 }
             }
             else if($this->_frame[$i][1] === '/') {
@@ -170,78 +178,46 @@ class Player {
              // spacing is a bit messed up due to frame 10 handling added last
             }
         }
+        // calculate the total score
+        for($i = 0; $i<10; $i++) {
+            $this->totalScore += (integer)$this->_frameScore[$i];
+        }
     }
     
     public function printScores() {
-        echo sprintf('
-                <tr>
-                    <td rowspan="2">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                    <td style="width:30px; text-align:center">%s</td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="2" style="text-align:center">%s</td>
-                    <td colspan="3" style="text-align:center"><b>Slutpo&auml;ng: %s</b></td>
-                </tr>',
-                $this->_name,
-                $this->_frame[0][0],
-                $this->_frame[0][1],
-                $this->_frame[1][0],
-                $this->_frame[1][1],
-                $this->_frame[2][0],
-                $this->_frame[2][1],
-                $this->_frame[3][0],
-                $this->_frame[3][1],
-                $this->_frame[4][0],
-                $this->_frame[4][1],
-                $this->_frame[5][0],
-                $this->_frame[5][1],
-                $this->_frame[6][0],
-                $this->_frame[6][1],
-                $this->_frame[7][0],
-                $this->_frame[7][1],
-                $this->_frame[8][0],
-                $this->_frame[8][1],
-                $this->_frame[9][0],
-                $this->_frame[9][1],
-                $this->_frame[9][2],
-                $this->_frameScore[0],
-                $this->_frameScore[1],
-                $this->_frameScore[2],
-                $this->_frameScore[3],
-                $this->_frameScore[4],
-                $this->_frameScore[5],
-                $this->_frameScore[6],
-                $this->_frameScore[7],
-                $this->_frameScore[8],
-                $this->_frameScore[9]);
+        // new better loop of printing scores, takes less space at least, also includes the running total
+        $runningScore = 0;
+        $tmpString = '<tr><td rowspan="2">' . $this->_name . '</td>';
+            for($i = 0; $i<10; $i++) {
+                if($i === 9) {
+                    $tmpString .= '<td style="width:30px; text-align:center">';
+                    $tmpString .= ($this->_frame[$i][0] === 0) ? '-' : $this->_frame[$i][0]  . '</td>';
+                    
+                    $tmpString .= '<td style="width:30px; text-align:center">';
+                    $tmpString .= ($this->_frame[$i][1] === 0) ? '-' : $this->_frame[$i][1]  . '</td>';
+                    $tmpString .= '<td style="width:30px; text-align:center">';
+                    $tmpString .= ($this->_frame[$i][2] === 0) ? '-' : $this->_frame[$i][2]  . '</td>';
+                }
+                else {
+                    $tmpString .= '<td style="width:30px; text-align:center">';
+                    $tmpString .= ($this->_frame[$i][0] === 0) ? '-' : $this->_frame[$i][0]  . '</td>';
+                    $tmpString .= '<td style="width:30px; text-align:center">';
+                    $tmpString .= ($this->_frame[$i][1] === 0) ? '-' : $this->_frame[$i][1]  . '</td>';
+                }
+            }
+        $tmpString .= '</tr><tr>';
+            for($i = 0; $i<10; $i++){
+                $runningScore += $this->_frameScore[$i];
+                if($i === 9) {
+                    $tmpString .= '<td colspan="3" style="text-align:center"><b>Slutpo&auml;ng: ' . $runningScore . '</b></td>';
+                }
+                else {
+                    $tmpString .=  '<td colspan="2" style="text-align:center">' . $runningScore . '</td>';
+                }
+            }
+        $tmpString .= '</tr>';
+        
+        echo $tmpString;
     }
 }
 ?> 

@@ -8,6 +8,10 @@
         $playerList=array();
         $_SESSION['plrArray'] = $playerList;
     }
+    
+    function sortScores() {
+    }
+    
  ?>
  
 <html>
@@ -26,8 +30,9 @@
 
             <?php 
                 if($_POST['submit']) {
-                    $_POST['name'] = new Player($_POST[name]);
-                    array_push($_SESSION['plrArray'],$_POST[name]);
+                    $_SESSION['nrOfPlayers'] = new Player($_POST[name]);
+                    array_push($_SESSION['plrArray'],$_SESSION['nrOfPlayers']);
+                    $_SESSION['nrOfPlayers']++;
                 }
 	
                 if($_POST['clear']) {
@@ -59,8 +64,11 @@
 <?php
 	if($_POST['startGame']) {
 	    foreach($_SESSION['plrArray'] as $player) {
-	        $player->playBowling();
+	        $player->playBowling(); 
 	    }
+        
+        // after game is played and scores are tallied, sort the winner to the top
+        
 ?>
 	
 	<table border="1">
