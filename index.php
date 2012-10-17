@@ -66,16 +66,16 @@
 	<table border="1">
 		<tr>
             <th>Spelare</th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-            <th>6</th>
-            <th>7</th>
-            <th>8</th>
-            <th>9</th>
-            <th>10</th>
+            <th colspan="2" style="width:60px">1</th>
+            <th colspan="2" style="width:60px">2</th>
+            <th colspan="2" style="width:60px">3</th>
+            <th colspan="2" style="width:60px">4</th>
+            <th colspan="2" style="width:60px">5</th>
+            <th colspan="2" style="width:60px">6</th>
+            <th colspan="2" style="width:60px">7</th>
+            <th colspan="2" style="width:60px">8</th>
+            <th colspan="2" style="width:60px">9</th>
+            <th colspan="3" style="width:90px">10</th>
         </tr>
 
         <?php
