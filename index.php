@@ -53,7 +53,7 @@
                 <form action="<?php $_PHP_SELF ?>" method="post">
                
                 <b>Namn:</b> <input type="text" name="name" />
-                <input type="submit" name="submit" value="L&auml;gg till" />
+                <input type="submit" name="submit" value="L&auml;gg till" class="btn" />
                 
                 
                 </form>
@@ -99,7 +99,7 @@
             </table>
             <div>
                     <form action="<?php $_PHP_SELF ?>" method="post">
-        <input type="submit" name="clear" value="Rensa listan" />
+        <input type="submit" name="clear" value="Rensa listan" class="btn" />
         </form>
             </div>
            </div>
@@ -111,7 +111,7 @@
             <hr />
             <p>När du är färdig är det bara att starta spelet genom att trycka på denna knapp!</p>
             <form action="<?php $_PHP_SELF ?>" method="post">
-                <input type="submit" name="startGame" value="Starta spelet" />
+                <input type="submit" name="startGame" value="Starta spelet" class="btn" />
             </form>
             
             
